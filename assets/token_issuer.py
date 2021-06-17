@@ -5,7 +5,7 @@ sys.path.insert(0, '.')
 from algobpy.parse import parse_params
 from pyteal import *
 
-def token_issuer(assetID):
+def token_issuer(assetId):
     """
     This smart contract implements a stateful counter
     """
@@ -52,7 +52,7 @@ def token_issuer(assetID):
     # Check that this is an asset transfer
     amount_check = Txn.amount() == Int(0)
     asset_amount_check = Txn.asset_amount() == Int(1)
-    asset_id_check = Txn.xfer_asset() == assetID # Passed in parameter
+    asset_id_check = Txn.xfer_asset() == assetId # Passed in parameter
     asset_sender_check = Txn.asset_sender() == Txn.accounts[0]
     asset_receiver_check = Txn.asset_receiver() == Gtxn[0].sender()
 
@@ -87,5 +87,5 @@ if __name__ == "__main__":
 
     params = parse_params(sys.argv[1], {})
     print(compileTeal(
-        token_issuer(Int(params["assetID"])), 
+        token_issuer(Int(params["assetId"])), 
         Mode.Signature))

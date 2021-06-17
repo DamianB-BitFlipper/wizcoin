@@ -2,7 +2,7 @@ wizcoin:
   total: 69
   decimals: 0
   defaultFrozen: false
-  unitName: "WizCoin"
+  unitName: "WZC"
   url: "url"
   # User may get "signature validation failed" from node if shorter hash is used.
   metadataHash: "12312442142141241244444411111133"

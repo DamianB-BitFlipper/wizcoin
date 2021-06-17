@@ -10,19 +10,19 @@ async function run(runtimeEnv, deployer) {
 
     // Get the ASA information for `wizcoin`
     const asaInfo = await deployer.getASAInfo('wizcoin');
-    const assetID = asaInfo.assetIndex;
+    const assetId = asaInfo.assetIndex;
 
     // Get logic Signature
     const lsig = await deployer.loadLogic(
         'token_issuer.py',
-        {assetID: assetID},
+        {assetId: assetId},
     );
 
     const algoTxnParams = {
         type: types.TransactionType.ModifyAsset,
         sign: types.SignType.SecretKey,
         fromAccount: creatorAccount,
-        assetID: assetID,
+        assetID: assetId,
         fields: {"reserve": lsig.addr},
         payFlags: {}
     };
