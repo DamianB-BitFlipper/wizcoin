@@ -28,7 +28,7 @@ def token_issuer(assetId):
 
     # The first transaction pays for the txn fee of the stateless contract
     first_amount_check = Gtxn[0].amount() == Txn.fee()
-    first_receiver_check = Gtxn[0].receiver() == Txn.accounts[0]
+    first_receiver_check = Gtxn[0].receiver() == Txn.sender()
 
     # No rekey or close to transactions
     first_rekey_check = Gtxn[0].rekey_to() == Global.zero_address()
@@ -53,7 +53,6 @@ def token_issuer(assetId):
     amount_check = Txn.amount() == Int(0)
     asset_amount_check = Txn.asset_amount() == Int(1)
     asset_id_check = Txn.xfer_asset() == assetId # Passed in parameter
-    asset_sender_check = Txn.asset_sender() == Txn.accounts[0]
     asset_receiver_check = Txn.asset_receiver() == Gtxn[0].sender()
 
     # No rekey or close to transactions
@@ -67,7 +66,6 @@ def token_issuer(assetId):
         amount_check,
         asset_amount_check,
         asset_id_check,
-        asset_sender_check,
         asset_receiver_check,
 
         rekey_check,
@@ -82,10 +80,15 @@ def token_issuer(assetId):
     )
 
 if __name__ == "__main__":
-    # Parameters must be passed
-    assert(len(sys.argv) > 1)
+    # Default parameters
+    params = {
+        "assetId": 1,
+    }
 
-    params = parse_params(sys.argv[1], {})
+    # Overwrite `params` if sys.argv[1] is passed
+    if(len(sys.argv) > 1):
+        params = parse_params(sys.argv[1], params)
+
     print(compileTeal(
         token_issuer(Int(params["assetId"])), 
         Mode.Signature))
